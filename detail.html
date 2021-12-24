@@ -7,8 +7,47 @@
 </head>
 <body>
     
-    <script>
+    <a href="./showcase.html">Kembali ke showcase</a>
+    <div id="buttons">
 
+    </div>
+    <div id="container">
+
+    </div>
+    <script>
+        let params = new URLSearchParams(document.location.search);
+        let id = params.get("id");
+        console.log(id)
+        fetch(`http://sbf-be-3.herokuapp.com/${id}/`)
+        .then( response => {
+            return response.json()
+        })
+        .then( data => {
+            appendData(data["data"])
+        })
+        function appendData(data) {
+            let container = document.getElementById("container")
+            let buttons = document.getElementById("buttons")
+            let title = data.title
+            let poster = data.poster
+            let trailer = data.trailer
+            let genre = data.genre
+            let year_released = data.year_released
+            let likes = data.likes
+            let dislikes = data.dislikes
+            let item = document.createElement("a")
+            let temp = document.createElement("div")
+            
+            temp.innerHTML = (
+                `<h1>${title} (${year_released})</h1>` +
+                `<p>Genre: ${genre}</p>` +
+                `<img src=${poster} width=200px style="border-radius: 6px;">` +
+                `<p>Trailer:</p>` +
+                `<iframe width="560" height="315" src=https://www.youtube.com/embed/${trailer.slice(17)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
+            )
+            container.appendChild(temp)
+            
+        }
     </script>
 </body>
 </html>

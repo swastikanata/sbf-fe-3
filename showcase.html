@@ -9,7 +9,7 @@
     <div class="header">
 
     </div>
-    <a href="./form.html">Tambahkan film</a>
+    <a href="./form.html" id="next-page">Tambahkan film</a>
     <div id="container" style="display: flex; flex-direction: row;flex-wrap: wrap;">
 
     </div>
@@ -22,7 +22,6 @@
             appendData(data["data"])
         })
         function appendData(data) {
-            console.log(data)
             container = document.getElementById("container")
             for(let i=0; i<data.length; i++){
                 let id = data[i].id
@@ -34,7 +33,7 @@
                 let item = document.createElement("a")
                 let temp = document.createElement("div")
                 item.id = id
-                item.href = "./detail.html"
+                item.href = `./detail.html?id=${id}`
                 item.style.textDecoration = "none"
                 item.style.color = "black"
                 temp.style.width = "300px"
