@@ -30,6 +30,10 @@
             likeButton.addEventListener("click", likeHandler)
             dislikeButton.addEventListener("click", dislikeHandler)
         })
+        .then( () => {
+            let deleteButton = document.getElementById("delete-button")
+            deleteButton.addEventListener("click", deleteHandler)
+        })
         function appendData(data) {
             let container = document.getElementById("container")
             let buttons = document.getElementById("buttons")
@@ -45,7 +49,7 @@
             buttons.innerHTML = (
                 `<button id="like-button">Like: <span id="likes">${likes}</span></button>`+
                 `<button id="dislike-button">Dislike: <span id="dislikes">${dislikes}</span></button>`+
-                `<button>Delete</button>`
+                `<a ><button id="delete-button">Delete</button></a>`
             )
             temp.innerHTML = (
                 `<h1>${title} (${year_released})</h1>` +
@@ -80,6 +84,14 @@
             .then( data => {
                 dislikes = document.getElementById('dislikes')
                 dislikes.innerHTML = data["data"].dislikes
+            })
+        }
+        function deleteHandler(event) {
+            fetch(`http://sbf-be-3.herokuapp.com/${id}/`, {
+                method: 'DELETE'
+            })
+            .then( response => {
+                return response.json()
             })
         }
     </script>
