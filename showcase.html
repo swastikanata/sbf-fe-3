@@ -1,0 +1,53 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showcase</title>
+</head>
+<body>
+    <div class="header">
+
+    </div>
+    <a href="./form.html">Tambahkan film</a>
+    <div id="container" style="display: flex; flex-direction: row;flex-wrap: wrap;">
+
+    </div>
+    <script>
+        fetch("http://sbf-be-3.herokuapp.com/")
+        .then( response => {
+            return response.json()
+        })
+        .then( data => {
+            appendData(data["data"])
+        })
+        function appendData(data) {
+            console.log(data)
+            container = document.getElementById("container")
+            for(let i=0; i<data.length; i++){
+                let id = data[i].id
+                let title = data[i].title
+                let poster = data[i].poster
+                let trailer = data[i].trailer
+                let genre = data[i].genre
+                let year_released = data[i].year_released
+                let item = document.createElement("a")
+                let temp = document.createElement("div")
+                item.id = id
+                item.href = "./detail.html"
+                item.style.textDecoration = "none"
+                item.style.color = "black"
+                temp.style.width = "300px"
+                temp.style.margin = "40px"
+                temp.innerHTML = (
+                    `<h1>${title} (${year_released})</h1>` +
+                    `<p>Genre: ${genre}</p>` +
+                    `<img src=${poster} width=200px style="border-radius: 6px;">`
+                )
+                item.appendChild(temp)
+                container.appendChild(item)
+            }
+        }
+    </script>
+</body>
+</html>
