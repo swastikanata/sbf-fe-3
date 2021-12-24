@@ -17,13 +17,18 @@
     <script>
         let params = new URLSearchParams(document.location.search);
         let id = params.get("id");
-        console.log(id)
         fetch(`http://sbf-be-3.herokuapp.com/${id}/`)
         .then( response => {
             return response.json()
         })
         .then( data => {
             appendData(data["data"])
+        })
+        .then( () => {
+            let likeButton = document.getElementById("like-button")
+            let dislikeButton = document.getElementById("dislike-button")
+            likeButton.addEventListener("click", likeHandler)
+            dislikeButton.addEventListener("click", dislikeHandler)
         })
         function appendData(data) {
             let container = document.getElementById("container")
@@ -37,7 +42,11 @@
             let dislikes = data.dislikes
             let item = document.createElement("a")
             let temp = document.createElement("div")
-            
+            buttons.innerHTML = (
+                `<button id="like-button">Like: <span id="likes">${likes}</span></button>`+
+                `<button id="dislike-button">Dislike: <span id="dislikes">${dislikes}</span></button>`+
+                `<button>Delete</button>`
+            )
             temp.innerHTML = (
                 `<h1>${title} (${year_released})</h1>` +
                 `<p>Genre: ${genre}</p>` +
@@ -46,7 +55,32 @@
                 `<iframe width="560" height="315" src=https://www.youtube.com/embed/${trailer.slice(17)} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`
             )
             container.appendChild(temp)
+        }
+        
+        function likeHandler(event) {
+            fetch(`http://sbf-be-3.herokuapp.com/${id}/like/`, {
+                method: 'PUT'
+            })
+            .then( response => {
+                return response.json()
+            })
+            .then( data => {
+                likes = document.getElementById('likes')
+                likes.innerHTML = data["data"].likes
+            })
             
+        }
+        function dislikeHandler(event) {
+            fetch(`http://sbf-be-3.herokuapp.com/${id}/dislike/`, {
+                method: 'PUT'
+            })
+            .then( response => {
+                return response.json()
+            })
+            .then( data => {
+                dislikes = document.getElementById('dislikes')
+                dislikes.innerHTML = data["data"].dislikes
+            })
         }
     </script>
 </body>
